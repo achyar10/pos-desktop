@@ -1,6 +1,6 @@
 import Axios from 'axios'
 
-const Get = (url, params) => {
+export const Get = (url, params) => {
     return new Promise((resolve, reject) => {
         const data = new URLSearchParams(params)
         Axios.get(`${url}?${data}`)
@@ -12,7 +12,7 @@ const Get = (url, params) => {
     })
 }
 
-const Post = (url, body) => {
+export const Post = (url, body) => {
     return new Promise((resolve, reject) => {
         Axios.post(url, body)
             .then(result => {
@@ -25,7 +25,7 @@ const Post = (url, body) => {
     })
 }
 
-const Put = (url, body) => {
+export const Put = (url, body) => {
     return new Promise((resolve, reject) => {
         Axios.put(url, body)
             .then(result => {
@@ -38,7 +38,7 @@ const Put = (url, body) => {
     })
 }
 
-const Delete = (url, body) => {
+export const Delete = (url, body) => {
     return new Promise((resolve, reject) => {
         Axios.delete(url, {}, body)
             .then(result => {
@@ -50,7 +50,3 @@ const Delete = (url, body) => {
             })
     })
 }
-
-const exports = { Post, Get, Put, Delete }
-
-export default exports

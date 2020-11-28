@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import Fetch from '../../utils/Fetch'
+import { Post } from '../../utils/Fetch'
 import { Alert } from '../../utils/Notification'
 import { login } from '../../Endpoint'
 import './login.css'
@@ -9,24 +9,23 @@ const Login = (props) => {
     const [username, setusername] = useState('')
     const [password, setPassword] = useState('')
 
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault()
         if (username === '') return Alert('Username tidak boleh kosong')
         if (password === '') return Alert('Password tidak boleh kosong')
-        Fetch.Post(login, { username, password })
-            .then(res => {
-                if (res.status) {
-                    localStorage.setItem('session', JSON.stringify(res.data))
-                    props.history.push('/')
-                } else {
-                    localStorage.removeItem('session')
-                    Alert(res.message)
-                }
-            })
-            .catch(err => {
+        try {
+            const res = await Post(login, { username, password })
+            if (res.status) {
+                localStorage.setItem('session', JSON.stringify(res.data))
+                props.history.push('/')
+            } else {
                 localStorage.removeItem('session')
-                Alert(err)
-            })
+                Alert(res.message)
+            }
+        } catch (error) {
+            localStorage.removeItem('session')
+            Alert(error)
+        }
     }
 
     if (localStorage.getItem('session')) {
